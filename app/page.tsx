@@ -20,8 +20,12 @@ import BlurText from "./components/BlurText"
 import { EmailVerification } from "./components/EmailVerification"
 import RotatingText from "./components/RotatingText"
 import { DownloadIcon, Smartphone } from "lucide-react"
+import Banner from './components/Banner'
+import CTAButton from './components/CTAButton'
+import { useFeatureFlagVariantKey } from 'posthog-js/react'
 
 export default function SenipyHomePage() {
+  const ctaVariant: "A" | "B" = "B"
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [authDialog, setAuthDialog] = useState<"signin" | "signup" | null>(null)
   const [activeGame, setActiveGame] = useState<string | null>(null)
@@ -75,6 +79,18 @@ export default function SenipyHomePage() {
   const handleAnimationComplete = () => {
     console.log("BlurText animation completed!")
   }
+  const [bannerVariant] = useState<"A" | "B">(() =>
+    Math.random() < 0.5 ? "A" : "B"
+  )
+ return (
+    <>
+      <Banner variant={bannerVariant} />
+      {/* Other content */}
+      <div className="mt-6">
+        <CTAButton />
+      </div>
+    </>
+  )
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">

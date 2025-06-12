@@ -1,14 +1,26 @@
 'use client'
 
+import { useEffect, useState } from 'react'
 import { useFeatureFlagVariantKey } from 'posthog-js/react'
 import posthog from '@/lib/posthog'
 
 const CTAButton: React.FC = () => {
   const variant = useFeatureFlagVariantKey('cta-button-variant')
+  const [payload, setPayload] = useState<any>(null)
+
+  useEffect(() => {
+    if (posthog) {
+      const flagPayload = posthog.getFeatureFlagPayload('cta-button-variant')
+      setPayload(flagPayload)
+    }
+  }, [variant]) // Run again if variant changes
 
   const handleClick = () => {
-    posthog.capture('cta_clicked', { variant })
-    // Redirect or open modal etc.
+    posthog.capture('cta_clicked', {
+      variant,
+      payload,
+    })
+    // Do something like redirect
   }
 
   switch (variant) {
